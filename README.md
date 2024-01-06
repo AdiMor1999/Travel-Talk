@@ -1,10 +1,10 @@
 # Travel-Talk
 Travel Blog Website Requirements Document
 
-1. User Registration and Authentication
-1.1	User Registration
-•	Users should be able to register by providing a unique email and password.
-•	Possibility of registration by an external provider, Google
+1. User Registration and Authentication<br />
+1.1	User Registration<br />
+•	Users should be able to register by providing a unique email and password.<br />
+•	Possibility of registration by an external provider, Google<br />
 
 1.2 User Authentication
 •	Users must be authenticated before accessing any features.
