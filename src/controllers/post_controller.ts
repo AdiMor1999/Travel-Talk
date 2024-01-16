@@ -8,9 +8,9 @@ class postController {
         try {
             const posts = await Post.find();
             res.send(posts);
-          } catch (error) {
+        } catch (error) {
             res.status(500).json({ error: 'Internal Server Error' });
-          }
+        }
     }
 
     async getById(req: Request, res: Response) {
