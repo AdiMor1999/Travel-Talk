@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import UserModel, { IUser } from "../models/user_model";
-
-const getUserProfile = async (req: Request, res: Response) => {
+import { AuthResquest } from "../middlewares/auth_middleware";
+const getUserProfile = async (req: AuthResquest, res: Response) => {
   try {
     const userId = req.params.userId;
+    console.log(userId);
 
     // Retrieve user profile information based on userId
     const user = await UserModel.findById(userId);
@@ -26,7 +27,7 @@ const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-const updateUserProfile = async (req: Request, res: Response) => {
+const updateUserProfile = async (req: AuthResquest, res: Response) => {
   try {
     const userId = req.params.userId;
     const { name, profilePhoto, aboutMe } = req.body;
