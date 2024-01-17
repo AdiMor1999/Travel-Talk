@@ -2,7 +2,7 @@ import { Express } from 'express';
 import request from 'supertest';
 import initApp from '../app';
 import mongoose from 'mongoose';
-import PostInteraction, { IPostInteraction, IComment } from '../models/post_interaction_model';
+import PostInteraction, {IPostInteraction, IComment} from '../models/post_interaction_model';
 import Post, {IPost} from "../models/post_model";
 import { beforeAll, afterAll } from '@jest/globals';
 
