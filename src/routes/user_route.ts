@@ -1,11 +1,9 @@
 import express from "express";
 import userController from "../controllers/user_controller";
+import authMiddleware from "../middlewares/auth_middleware";
 const router = express.Router();
 
-// Retrieve the profile information for a specific user
-router.get("/:userId", userController.getUserProfile);
-
-// Update the profile information for a specific user
-router.patch("/:userId", userController.updateUserProfile);
+router.get("/:userId", authMiddleware, userController.getUserProfile);
+router.patch("/:userId", authMiddleware, userController.updateUserProfile);
 
 export default router;

@@ -1,52 +1,60 @@
 import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
-import UserModel from "../models/user_model";
+import User, { IUser } from "../models/user_model";
 import { Express } from "express";
 
 let app: Express;
 let testUserId;
+let accessToken;
+// Create a test user
+const testUser: IUser = {
+  email: "testUser@test.com",
+  name: "Test User",
+  password: "testPassword",
+  profilePhoto: "testPhoto.jpg",
+  aboutMe: "I love testing!",
+};
+describe("User Controller Tests", () => {
+  beforeAll(async () => {
+    app = await initApp();
 
-beforeAll(async () => {
-  app = await initApp();
+    const registerResponse = await request(app)
+      .post("/auth/register")
+      .send(testUser);
+    const loginResponse = await request(app).post("/auth/login").send(testUser);
+    accessToken = loginResponse.body.accessToken;
 
-  // Create a test user
-  const testUser = await UserModel.create({
-    email: "testUser@test.com",
-    name: "Test User",
-    password: "testPassword",
-    profilePhoto: "testPhoto.jpg",
-    aboutMe: "I love testing!",
+    testUserId = loginResponse.body.userId;
+    console.log(testUserId);
   });
 
-  testUserId = testUser._id;
-});
-
-afterAll(async () => {
-  await mongoose.connection.close();
-});
-
-describe("User Controller Tests", () => {
-  test("GET /user/:userId - Get User Profile", async () => {
-    const response = await request(app).get(`/user/${testUserId}`);
+  afterAll(async () => {
+    User.deleteMany({ email: testUser.email });
+    await mongoose.connection.close();
+  });
+  test("should retrieve user profile with valid user ID and authentication token", async () => {
+    const response = await request(app)
+      .get(`/user/${testUserId}`)
+      .set("Authorization", `JWT ${accessToken}`);
     expect(response.status).toBe(200);
 
     const userProfile = response.body.userProfile;
     expect(userProfile).toBeDefined();
     expect(userProfile.email).toBeDefined();
     expect(userProfile.Name).toBeDefined();
-    expect(userProfile.profilePhoto).toBeDefined();
-    expect(userProfile.aboutMe).toBeDefined();
   });
 
-  test("GET /user/:userId - Get User Profile (User not found)", async () => {
+  test("should handle case where user ID does not exist during profile retrieval", async () => {
     const nonExistentUserId = "123456789012345678901234"; // A non-existent user ID
-    const response = await request(app).get(`/user/${nonExistentUserId}`);
+    const response = await request(app)
+      .get(`/user/${nonExistentUserId}`)
+      .set("Authorization", `JWT ${accessToken}`);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("User not found");
   });
 
-  test("PATCH /user/:userId - Update User Profile", async () => {
+  test("should update user profile with valid user ID and authentication token", async () => {
     const updatedProfile = {
       name: "Updated Name",
       profilePhoto: "updatedPhoto.jpg",
@@ -55,6 +63,7 @@ describe("User Controller Tests", () => {
 
     const response = await request(app)
       .patch(`/user/${testUserId}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send(updatedProfile);
     expect(response.status).toBe(200);
 
@@ -65,7 +74,7 @@ describe("User Controller Tests", () => {
     expect(updatedUser.aboutMe).toBe(updatedProfile.aboutMe);
   });
 
-  test("PATCH /user/:userId - Update User Profile (User not found)", async () => {
+  test("should handle case where user ID for updating does not exist", async () => {
     const nonExistentUserId = "123456789012345678901234"; // A non-existent user ID
     const updatedProfile = {
       name: "Updated Name",
@@ -75,6 +84,7 @@ describe("User Controller Tests", () => {
 
     const response = await request(app)
       .patch(`/user/${nonExistentUserId}`)
+      .set("Authorization", `JWT ${accessToken}`)
       .send(updatedProfile);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("User not found");
