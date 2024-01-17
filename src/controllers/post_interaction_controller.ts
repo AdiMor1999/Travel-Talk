@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import PostInteraction, { IPostInteraction, IComment } from '../models/post_interaction_model';
+import PostInteraction, {IPostInteraction, IComment} from '../models/post_interaction_model';
 import Post, {IPost} from "../models/post_model";
 import mongoose from 'mongoose';
 
