@@ -2,15 +2,159 @@ import express from "express";
 const router = express.Router();
 import postController from "../controllers/post_controller";
 
+/**
+ * @swagger
+ * tags:
+ *   name: Post
+ *   description: API for managing posts
+ */
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: The title of the post.
+ *         location:
+ *           type: string
+ *           description: The location associated with the post.
+ *         description:
+ *           type: string
+ *           description: A description of the post.
+ *         photos:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: An array of photo URLs associated with the post.
+ *         userId:
+ *           type: string
+ *           description: The user ID associated with the post.
+ *       required:
+ *         - title
+ *         - location
+ *         - description
+ *         - photos
+ *         - userId
+ */
+
+/**
+ * @swagger
+ * /post:
+ *   get:
+ *     summary: Get all posts
+ *     tags: [Posts]
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/', postController.getAll.bind(postController));
 
+/**
+ * @swagger
+ * /post/{id}:
+ *   get:
+ *     summary: Get post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the post
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Internal server error
+ */
 router.get('/:id', postController.getById.bind(postController));
-
+/**
+ * @swagger
+ * /post:
+ *   post:
+ *     summary: Create a new post
+ *     tags: [Posts]
+ *     requestBody:
+ *       description: Post data
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'   # Reference to the Post schema
+ *           example:
+ *             title: "Example Post"
+ *             location: "Example Location"
+ *             description: "This is an example post description."
+ *             photos: ["example-photo1.jpg", "example-photo2.jpg"]
+ *             userId: "exampleUserId"
+ *     responses:
+ *       201:
+ *         description: The created post
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/', postController.create.bind(postController));
-
+/**
+ * @swagger
+ * /post/{id}:
+ *   patch:
+ *     summary: Update a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post
+ *     requestBody:
+ *       description: Updated post data
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Post'   # Reference to the Post schema
+ *     responses:
+ *       200:
+ *         description: The updated post
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Internal server error
+ */
 router.patch('/:id', postController.updateById.bind(postController));
-
+/**
+ * @swagger
+ * /post/{id}:
+ *   delete:
+ *     summary: Delete a post by ID
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post
+ *     responses:
+ *       204:
+ *         description: Post deleted successfully
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Internal server error
+ */
 router.delete('/:id', postController.deleteById.bind(postController));
 
 export default router;
