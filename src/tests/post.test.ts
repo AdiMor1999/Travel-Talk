@@ -4,12 +4,29 @@ import initApp from "../app";
 import mongoose from "mongoose";
 import Post, {IPost} from "../models/post_model";
 import { beforeAll, afterAll } from '@jest/globals';
+import User, { IUser } from "../models/user_model";
 
 let app: Express;
+let accessToken;
+
+// Create a test user
+const testUser: IUser = {
+    email: "testUserPost@test.com",
+    name: "Test User Post",
+    password: "testPostPassword",
+    profilePhoto: "testPostPhoto.jpg",
+    aboutMe: "I love testing with Post!",
+  };
+
 beforeAll(async() => {
     app = await initApp();
     console.log("beforeAll");
     await Post.deleteMany();
+    const registerResponse = await request(app)
+      .post("/auth/register")
+      .send(testUser);
+    const loginResponse = await request(app).post("/auth/login").send(testUser);
+    accessToken = loginResponse.body.accessToken;
 })
 
 afterAll(async() => {
@@ -33,8 +50,8 @@ describe ("Post API test", ()=>{
           photos: ["photo1.jpg", "photo2.jpg"],
           userId: "testUserId",
         };
-    
-        const response = await request(app).post("/post").send(post);
+
+        const response = await request(app).post("/post").set("authorization", `JWT ${accessToken}`).send(post);
         expect(response.statusCode).toBe(201);
     
         const postsAfterCreation = await request(app).get("/post");
@@ -76,7 +93,7 @@ describe ("Post API test", ()=>{
           userId: "updatedTestUserId",
         };
     
-        const response = await request(app).patch(`/post/${postId}`).send(updatedPost);
+        const response = await request(app).patch(`/post/${postId}`).set("authorization", `JWT ${accessToken}`).send(updatedPost);
         expect(response.statusCode).toBe(200);
         const updatedPostById = response.body;
         expect(updatedPostById.title).toBe("Updated Test Post");
@@ -87,7 +104,7 @@ describe ("Post API test", ()=>{
     });
 
     test("Test Delete Post by ID", async () => {
-        const response = await request(app).delete(`/post/${postId}`);
+        const response = await request(app).delete(`/post/${postId}`).set("authorization", `JWT ${accessToken}`);
         expect(response.statusCode).toBe(200);
 
         const postsAfterDeletion = await request(app).get("/post");

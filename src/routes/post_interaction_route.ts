@@ -1,5 +1,6 @@
 import express from 'express';
 import postInteractionController from '../controllers/post_interaction_controller';
+import authMiddleware from "../middlewares/auth_middleware";
 
 const router = express.Router();
 
@@ -47,19 +48,23 @@ const router = express.Router();
  *   get:
  *     summary: Get all post interactions
  *     tags: [PostInteraction]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     responses:
  *       200:
  *         description: Successful response
  *       500:
  *         description: Internal server error
  */
-router.get('/', postInteractionController.getAllPosts.bind(postInteractionController));
+router.get('/', authMiddleware, postInteractionController.getAllPosts.bind(postInteractionController));
 /**
  * @swagger
  * /postInteraction/user/{userId}:
  *   get:
  *     summary: Get post interactions by user
  *     tags: [PostInteraction]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     parameters:
  *       - in: path
  *         name: userId
@@ -73,13 +78,15 @@ router.get('/', postInteractionController.getAllPosts.bind(postInteractionContro
  *       500:
  *         description: Internal server error
  */
-router.get('/user/:userId', postInteractionController.getByUser.bind(postInteractionController));
+router.get('/user/:userId', authMiddleware, postInteractionController.getByUser.bind(postInteractionController));
 /**
  * @swagger
  * /postInteraction/location/{location}:
  *   get:
  *     summary: Get post interactions by location
  *     tags: [PostInteraction]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     parameters:
  *       - in: path
  *         name: location
@@ -93,13 +100,15 @@ router.get('/user/:userId', postInteractionController.getByUser.bind(postInterac
  *       500:
  *         description: Internal server error
  */
-router.get('/location/:location', postInteractionController.getByLocation.bind(postInteractionController));
+router.get('/location/:location', authMiddleware, postInteractionController.getByLocation.bind(postInteractionController));
 /**
  * @swagger
  * /postInteraction/postId/{postId}:
  *   get:
  *     summary: Get comments by post ID
  *     tags: [PostInteraction]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     parameters:
  *       - in: path
  *         name: postId
@@ -113,13 +122,15 @@ router.get('/location/:location', postInteractionController.getByLocation.bind(p
  *       500:
  *         description: Internal server error
  */
-router.get('/postId/:postId', postInteractionController.getCommentsByPostId.bind(postInteractionController));
+router.get('/postId/:postId', authMiddleware, postInteractionController.getCommentsByPostId.bind(postInteractionController));
 /**
  * @swagger
  * /postInteraction/comment:
  *   post:
  *     summary: Add a comment to a post interaction
  *     tags: [PostInteraction]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     requestBody:
  *       description: Comment data
  *       required: true
@@ -137,6 +148,6 @@ router.get('/postId/:postId', postInteractionController.getCommentsByPostId.bind
  *       500:
  *         description: Internal server error
  */
-router.post('/comment', postInteractionController.addComment.bind(postInteractionController));
+router.post('/comment', authMiddleware, postInteractionController.addComment.bind(postInteractionController));
 
 export default router;

@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import postController from "../controllers/post_controller";
+import authMiddleware from "../middlewares/auth_middleware";
 
 /**
  * @swagger
@@ -83,6 +84,8 @@ router.get('/:id', postController.getById.bind(postController));
  *   post:
  *     summary: Create a new post
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     requestBody:
  *       description: Post data
  *       required: true
@@ -95,7 +98,7 @@ router.get('/:id', postController.getById.bind(postController));
  *             location: "Example Location"
  *             description: "This is an example post description."
  *             photos: ["example-photo1.jpg", "example-photo2.jpg"]
- *             userId: "exampleUserId"
+ *             userId: "65aa93a86c316d58657c7f4d"
  *     responses:
  *       201:
  *         description: The created post
@@ -104,13 +107,16 @@ router.get('/:id', postController.getById.bind(postController));
  *       500:
  *         description: Internal server error
  */
-router.post('/', postController.create.bind(postController));
+
+router.post('/', authMiddleware, postController.create.bind(postController));
 /**
  * @swagger
  * /post/{id}:
  *   patch:
  *     summary: Update a post by ID
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     parameters:
  *       - in: path
  *         name: id
@@ -133,13 +139,15 @@ router.post('/', postController.create.bind(postController));
  *       500:
  *         description: Internal server error
  */
-router.patch('/:id', postController.updateById.bind(postController));
+router.patch('/:id', authMiddleware, postController.updateById.bind(postController));
 /**
  * @swagger
  * /post/{id}:
  *   delete:
  *     summary: Delete a post by ID
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []  # Use bearer token for authentication
  *     parameters:
  *       - in: path
  *         name: id
@@ -155,6 +163,6 @@ router.patch('/:id', postController.updateById.bind(postController));
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', postController.deleteById.bind(postController));
+router.delete('/:id', authMiddleware, postController.deleteById.bind(postController));
 
 export default router;

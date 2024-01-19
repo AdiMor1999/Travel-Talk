@@ -32,10 +32,6 @@ const router = express.Router();
  *         aboutMe:
  *           type: string
  *           description: A brief description about the user.
- *         posts:
- *           type: array
- *           items:
- *             $ref: '#/components/schemas/Post'  # Reference to the Post schema
  *       required:
  *         - email
  *         - password

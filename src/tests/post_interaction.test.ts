@@ -5,15 +5,30 @@ import mongoose from 'mongoose';
 import PostInteraction, {IPostInteraction, IComment} from '../models/post_interaction_model';
 import Post, {IPost} from "../models/post_model";
 import { beforeAll, afterAll } from '@jest/globals';
+import User, { IUser } from "../models/user_model";
 
 let app: Express;
+let accessToken;
 
+// Create a test user
+const testUser: IUser = {
+    email: "testUserPostInteraction@test.com",
+    name: "Test User Post Interaction",
+    password: "testPostInteractionPassword",
+    profilePhoto: "testPostInteractionPhoto.jpg",
+    aboutMe: "I love testing with Post Interaction!",
+  };
 
 beforeAll(async() => {
     app = await initApp();
     console.log("beforeAll");
     await PostInteraction.deleteMany();
     await Post.deleteMany();
+    const registerResponse = await request(app)
+    .post("/auth/register")
+    .send(testUser);
+    const loginResponse = await request(app).post("/auth/login").send(testUser);
+    accessToken = loginResponse.body.accessToken;
 })
 
 afterAll(async() => {
@@ -25,7 +40,7 @@ describe('Post Interaction API test', () => {
     let postId: string;
 
     test('Test Get All Posts - empty response', async () => {
-        const response = await request(app).get("/postInteraction");
+        const response = await request(app).get("/postInteraction").set("authorization", `JWT ${accessToken}`);
         expect(response.statusCode).toBe(200);
         expect(response.body).toStrictEqual([]);
     });
@@ -33,6 +48,7 @@ describe('Post Interaction API test', () => {
     test('Test Create Post', async () => {
         const postResponse = await request(app)
           .post('/post')
+          .set("authorization", `JWT ${accessToken}`)
           .send({
             title: 'Test Post',
             location: 'Test Location',
@@ -52,6 +68,7 @@ describe('Post Interaction API test', () => {
     
         const response = await request(app)
           .post('/postInteraction/comment')
+          .set("authorization", `JWT ${accessToken}`)
           .send({ postId, userId, comment });
 
         expect(response.statusCode).toBe(200);
@@ -65,7 +82,7 @@ describe('Post Interaction API test', () => {
 
     test('Test Get Posts By Location', async () => {
       const location = 'Test Location';
-      const response = await request(app).get(`/postInteraction/location/${location}`);
+      const response = await request(app).get(`/postInteraction/location/${location}`).set("authorization", `JWT ${accessToken}`);
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].location).toBe(location);
@@ -73,7 +90,7 @@ describe('Post Interaction API test', () => {
 
     test('Test Get Posts By User', async () => {
       const userId = 'testUserId';
-      const response = await request(app).get(`/postInteraction/user/${userId}`);
+      const response = await request(app).get(`/postInteraction/user/${userId}`).set("authorization", `JWT ${accessToken}`);
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].userId).toBe(userId);
@@ -82,7 +99,7 @@ describe('Post Interaction API test', () => {
     test('Test Get Comments By Post Id', async () => {
       const userId = 'someUserId';
       const comment = 'This is a test comment';
-      const response = await request(app).get(`/postInteraction/postId/${postId}`);
+      const response = await request(app).get(`/postInteraction/postId/${postId}`).set("authorization", `JWT ${accessToken}`);
       expect(response.statusCode).toBe(200);
       expect(response.body).toHaveLength(1);
       expect(response.body[0].postId).toBe(postId);

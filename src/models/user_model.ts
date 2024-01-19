@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Types } from "mongoose";
-import { IPost } from "./post_model";
+
 
 // Define User schema
 export interface IUser {
@@ -10,7 +10,6 @@ export interface IUser {
   name: string;
   profilePhoto?: string;
   aboutMe?: string;
-  posts?: Types.Array<IPost>;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -36,12 +35,6 @@ const userSchema = new mongoose.Schema<IUser>({
   aboutMe: {
     type: String,
   },
-  posts: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "post_model",
-    },
-  ],
 });
 
 const UserModel = mongoose.model<IUser>("User", userSchema);
