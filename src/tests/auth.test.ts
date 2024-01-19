@@ -15,6 +15,16 @@ const userData = {
   password: "password123",
   name: "Adi Ofek",
 };
+const userLogOut = {
+  email: "logoutuser@example.com",
+  password: "logoutpassword",
+  name: "Logout User",
+};
+const userLogout = {
+  email: userLogOut.email,
+  password: "logoutpassword",
+  name: "logout",
+};
 
 describe("Auth Tests", () => {
   beforeAll(async () => {
@@ -24,72 +34,88 @@ describe("Auth Tests", () => {
   afterAll(async () => {
     await User.deleteMany({ email: userLogIn.email });
     await User.deleteMany({ email: userData.email });
+    await User.deleteMany({ email: userLogout.email });
     await mongoose.connection.close();
   });
 
-  describe("POST /auth/register", () => {
-    test("should register a new user", async () => {
-      const response = await request(app).post("/auth/register").send(userData);
+  test("should register a new user", async () => {
+    const response = await request(app).post("/auth/register").send(userData);
 
-      expect(response.status).toBe(201);
-      expect(response.body).toHaveProperty("_id");
-      expect(response.body.email).toBe(userData.email);
-      expect(response.body.name).toBe(userData.name);
-    });
-
-    test("should return 400 if missing email, password or name", async () => {
-      const response = await request(app).post("/auth/register").send({});
-
-      expect(response.status).toBe(400);
-    });
-
-    test("should return 406 if email already exists", async () => {
-      const existingUser = {
-        email: "existing@example.com",
-        password: "existingpassword",
-        name: "Existing User",
-      };
-
-      await request(app).post("/auth/register").send(existingUser);
-
-      const response = await request(app)
-        .post("/auth/register")
-        .send(existingUser);
-
-      expect(response.status).toBe(406);
-    });
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("_id");
+    expect(response.body.email).toBe(userData.email);
+    expect(response.body.name).toBe(userData.name);
   });
 
-  describe("POST /auth/login", () => {
-    test("should login with correct credentials", async () => {
-      // Register a user
-      await request(app).post("/auth/register").send(userLogIn);
+  test("should return 400 if missing email, password, or name", async () => {
+    const response = await request(app).post("/auth/register").send({});
 
-      // Login with correct credentials
-      const response = await request(app).post("/auth/login").send({
-        email: "loginuser@example.com",
-        password: "loginpassword",
-      });
+    expect(response.status).toBe(400);
+  });
 
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty("accessToken");
+  test("should return 406 if email already exists", async () => {
+    const existingUser = {
+      email: "existing@example.com",
+      password: "existingpassword",
+      name: "Existing User",
+    };
+
+    await request(app).post("/auth/register").send(existingUser);
+
+    const response = await request(app)
+      .post("/auth/register")
+      .send(existingUser);
+
+    expect(response.status).toBe(406);
+  });
+
+  test("should login with correct credentials", async () => {
+    // Register a user
+    await request(app).post("/auth/register").send(userLogIn);
+
+    // Login with correct credentials
+    const response = await request(app).post("/auth/login").send({
+      email: "loginuser@example.com",
+      password: "loginpassword",
     });
 
-    test("should return 400 if missing email or password", async () => {
-      const response = await request(app).post("/auth/login").send({});
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("accessToken");
+  });
 
-      expect(response.status).toBe(400);
+  test("should return 400 if missing email or password", async () => {
+    const response = await request(app).post("/auth/login").send({});
+
+    expect(response.status).toBe(400);
+  });
+
+  test("should return 401 if email or password incorrect", async () => {
+    const userData = {
+      email: "incorrect@example.com",
+      password: "incorrectpassword",
+    };
+
+    const response = await request(app).post("/auth/login").send(userData);
+
+    expect(response.status).toBe(401);
+  });
+  test("should log out the user", async () => {
+    // Login with the test user's credentials
+    await request(app).post("/auth/register").send(userLogout);
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: userLogOut.email,
+      password: "logoutpassword",
     });
 
-    test("should return 401 if email or password incorrect", async () => {
-      const userData = {
-        email: "incorrect@example.com",
-        password: "incorrectpassword",
-      };
+    const refreshToken = loginResponse.body.refreshToken;
+    expect(refreshToken).toBeDefined();
 
-      const response = await request(app).post("/auth/login").send(userData);
+    // Logout the user
+    const logoutResponse = await request(app)
+      .post("/auth/logout")
+      .set("authorization", `JWT ${refreshToken}`)
+      .send();
 
-      expect(response.status).toBe(401);
-    });
+    expect(logoutResponse.status).toBe(200);
   });
 });
