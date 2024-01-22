@@ -38,8 +38,71 @@ const router = express.Router();
  *         - name
  */
 
-
+/**
+ * @swagger
+ * /user/{userId}:
+ *   get:
+ *     summary: Get user profile
+ *     tags: [Users]
+ *     description: Retrieve the profile of a specific user.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to retrieve.
+ *     responses:
+ *       200:
+ *         description: Successful response with user profile data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized. User must be authenticated.
+ *       404:
+ *         description: User not found.
+ */
 router.get("/:userId", authMiddleware, userController.getUserProfile);
+
+/**
+ * @swagger
+ * /user/{userId}:
+ *   patch:
+ *     summary: Update user profile
+ *     tags: [Users]
+ *     description: Update the profile of a specific user.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to update.
+ *     requestBody:
+ *       description: Updated user profile data.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: Successful response with updated user profile data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized. User must be authenticated.
+ *       404:
+ *         description: User not found.
+ */
 router.patch("/:userId", authMiddleware, userController.updateUserProfile);
 
 export default router;

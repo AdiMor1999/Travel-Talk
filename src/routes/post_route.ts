@@ -6,7 +6,7 @@ import authMiddleware from "../middlewares/auth_middleware";
 /**
  * @swagger
  * tags:
- *   name: Post
+ *   name: Posts
  *   description: API for managing posts
  */
 
@@ -54,7 +54,7 @@ import authMiddleware from "../middlewares/auth_middleware";
  *       500:
  *         description: Internal server error
  */
-router.get('/', postController.getAll.bind(postController));
+router.get("/", postController.getAll.bind(postController));
 
 /**
  * @swagger
@@ -77,7 +77,7 @@ router.get('/', postController.getAll.bind(postController));
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', postController.getById.bind(postController));
+router.get("/:id", postController.getById.bind(postController));
 /**
  * @swagger
  * /post:
@@ -108,7 +108,7 @@ router.get('/:id', postController.getById.bind(postController));
  *         description: Internal server error
  */
 
-router.post('/', authMiddleware, postController.create.bind(postController));
+router.post("/", authMiddleware, postController.create.bind(postController));
 /**
  * @swagger
  * /post/{id}:
@@ -139,7 +139,11 @@ router.post('/', authMiddleware, postController.create.bind(postController));
  *       500:
  *         description: Internal server error
  */
-router.patch('/:id', authMiddleware, postController.updateById.bind(postController));
+router.patch(
+  "/:id",
+  authMiddleware,
+  postController.updateById.bind(postController)
+);
 /**
  * @swagger
  * /post/{id}:
@@ -163,6 +167,10 @@ router.patch('/:id', authMiddleware, postController.updateById.bind(postControll
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', authMiddleware, postController.deleteById.bind(postController));
+router.delete(
+  "/:id",
+  authMiddleware,
+  postController.deleteById.bind(postController)
+);
 
 export default router;
