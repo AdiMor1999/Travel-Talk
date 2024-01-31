@@ -7,6 +7,7 @@ import userRoute from "./routes/user_route";
 import authRoute from "./routes/auth_route";
 import postRoute from "./routes/post_route";
 import postInteractionRoute from "./routes/post_interaction_route";
+import fileRoute from "./routes/file_route";
 import cors from "cors";
 
 const initApp = (): Promise<Express> => {
@@ -21,10 +22,18 @@ const initApp = (): Promise<Express> => {
       app.use(cors());
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
+      app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        next();
+      });
       app.use("/user", userRoute);
       app.use("/auth", authRoute);
       app.use("/post", postRoute);
       app.use("/postInteraction", postInteractionRoute);
+      app.use("/file", fileRoute);
+      app.use("/public", express.static("public"));
       resolve(app);
     });
   });
