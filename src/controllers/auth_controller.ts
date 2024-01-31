@@ -159,9 +159,12 @@ const refreshToken = async (req: Request, res: Response) => {
   );
 };
 
+const loginWithGoogle = async (req: Request, res: Response) => {};
+
 export default {
   register,
   login,
   logout,
   refreshToken,
+  loginWithGoogle,
 };

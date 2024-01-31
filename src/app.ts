@@ -7,6 +7,7 @@ import userRoute from "./routes/user_route";
 import authRoute from "./routes/auth_route";
 import postRoute from "./routes/post_route";
 import postInteractionRoute from "./routes/post_interaction_route";
+import cors from "cors";
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -17,6 +18,7 @@ const initApp = (): Promise<Express> => {
     console.log(connectionString);
     mongoose.connect(connectionString).then(() => {
       const app = express();
+      app.use(cors());
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use("/user", userRoute);
