@@ -8,6 +8,7 @@ import authRoute from "./routes/auth_route";
 import postRoute from "./routes/post_route";
 import postInteractionRoute from "./routes/post_interaction_route";
 import fileRoute from "./routes/file_route";
+import weatherRouth from "./routes/weather_route";
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -32,6 +33,7 @@ const initApp = (): Promise<Express> => {
       app.use("/postInteraction", postInteractionRoute);
       app.use("/file", fileRoute);
       app.use("/public", express.static("public"));
+      app.use("/weather", weatherRouth);
       resolve(app);
     });
   });
