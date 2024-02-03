@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1706974291476" clover="3.2.0">
-  <project timestamp="1706974291477" name="All files">
+<coverage generated="1706974541345" clover="3.2.0">
+  <project timestamp="1706974541345" name="All files">
     <metrics statements="331" coveredstatements="264" conditionals="52" coveredconditionals="26" methods="40" coveredmethods="35" elements="423" coveredelements="325" complexity="0" loc="331" ncloc="331" packages="5" files="15" classes="15"/>
     <package name="src">
       <metrics statements="39" coveredstatements="39" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
-      <file name="app.ts" path="C:\Users\User\Desktop\Travel talk code\src\app.ts">
+      <file name="app.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\app.ts">
         <metrics statements="39" coveredstatements="39" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -49,7 +49,7 @@
     </package>
     <package name="src.controllers">
       <metrics statements="205" coveredstatements="149" conditionals="45" coveredconditionals="22" methods="28" coveredmethods="26"/>
-      <file name="auth_controller.ts" path="C:\Users\User\Desktop\Travel talk code\src\controllers\auth_controller.ts">
+      <file name="auth_controller.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\controllers\auth_controller.ts">
         <metrics statements="110" coveredstatements="71" conditionals="39" coveredconditionals="19" methods="14" coveredmethods="12"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -162,7 +162,7 @@
         <line num="209" count="0" type="stmt"/>
         <line num="213" count="6" type="stmt"/>
       </file>
-      <file name="post_controller.ts" path="C:\Users\User\Desktop\Travel talk code\src\controllers\post_controller.ts">
+      <file name="post_controller.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\controllers\post_controller.ts">
         <metrics statements="36" coveredstatements="28" conditionals="3" coveredconditionals="0" methods="5" coveredmethods="5"/>
         <line num="1" count="6" type="stmt"/>
         <line num="7" count="4" type="stmt"/>
@@ -201,7 +201,7 @@
         <line num="64" count="0" type="stmt"/>
         <line num="70" count="6" type="stmt"/>
       </file>
-      <file name="post_interaction_controller.ts" path="C:\Users\User\Desktop\Travel talk code\src\controllers\post_interaction_controller.ts">
+      <file name="post_interaction_controller.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\controllers\post_interaction_controller.ts">
         <metrics statements="36" coveredstatements="31" conditionals="1" coveredconditionals="1" methods="5" coveredmethods="5"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -240,7 +240,7 @@
         <line num="70" count="0" type="stmt"/>
         <line num="77" count="6" type="stmt"/>
       </file>
-      <file name="user_controller.ts" path="C:\Users\User\Desktop\Travel talk code\src\controllers\user_controller.ts">
+      <file name="user_controller.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\controllers\user_controller.ts">
         <metrics statements="23" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
         <line num="2" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -269,7 +269,7 @@
     </package>
     <package name="src.middlewares">
       <metrics statements="11" coveredstatements="11" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
-      <file name="auth_middleware.ts" path="C:\Users\User\Desktop\Travel talk code\src\middlewares\auth_middleware.ts">
+      <file name="auth_middleware.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\middlewares\auth_middleware.ts">
         <metrics statements="11" coveredstatements="11" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="2" count="6" type="stmt"/>
         <line num="8" count="6" type="stmt"/>
@@ -286,19 +286,19 @@
     </package>
     <package name="src.models">
       <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="post_interaction_model.ts" path="C:\Users\User\Desktop\Travel talk code\src\models\post_interaction_model.ts">
+      <file name="post_interaction_model.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\models\post_interaction_model.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="14" count="6" type="stmt"/>
         <line num="31" count="6" type="stmt"/>
       </file>
-      <file name="post_model.ts" path="C:\Users\User\Desktop\Travel talk code\src\models\post_model.ts">
+      <file name="post_model.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\models\post_model.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="11" count="6" type="stmt"/>
         <line num="34" count="6" type="stmt"/>
       </file>
-      <file name="user_model.ts" path="C:\Users\User\Desktop\Travel talk code\src\models\user_model.ts">
+      <file name="user_model.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\models\user_model.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="15" count="6" type="stmt"/>
@@ -308,7 +308,7 @@
     </package>
     <package name="src.routes">
       <metrics statements="66" coveredstatements="55" conditionals="4" coveredconditionals="1" methods="5" coveredmethods="3"/>
-      <file name="auth_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\auth_route.ts">
+      <file name="auth_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\auth_route.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -320,7 +320,7 @@
         <line num="134" count="6" type="stmt"/>
         <line num="136" count="6" type="stmt"/>
       </file>
-      <file name="file_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\file_route.ts">
+      <file name="file_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\file_route.ts">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -336,7 +336,7 @@
         <line num="24" count="1" type="stmt"/>
         <line num="26" count="6" type="stmt"/>
       </file>
-      <file name="post_interaction_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\post_interaction_route.ts">
+      <file name="post_interaction_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\post_interaction_route.ts">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -349,7 +349,7 @@
         <line num="151" count="6" type="stmt"/>
         <line num="153" count="6" type="stmt"/>
       </file>
-      <file name="post_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\post_route.ts">
+      <file name="post_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\post_route.ts">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -362,7 +362,7 @@
         <line num="170" count="6" type="stmt"/>
         <line num="176" count="6" type="stmt"/>
       </file>
-      <file name="user_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\user_route.ts">
+      <file name="user_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\user_route.ts">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -372,7 +372,7 @@
         <line num="106" count="6" type="stmt"/>
         <line num="108" count="6" type="stmt"/>
       </file>
-      <file name="weather_route.ts" path="C:\Users\User\Desktop\Travel talk code\src\routes\weather_route.ts">
+      <file name="weather_route.ts" path="C:\Users\Adi Mor\computerScience\year3\project\Travel-Talk\src\routes\weather_route.ts">
         <metrics statements="17" coveredstatements="6" conditionals="4" coveredconditionals="1" methods="2" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
