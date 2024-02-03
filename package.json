@@ -4,7 +4,7 @@
   "description": "a blog about travels",
   "main": "app.js",
   "scripts": {
-    "test": "tsc && jest --detectOpenHandles --forceExit",
+    "test": "tsc && jest --detectOpenHandles --coverage --forceExit",
     "start": "tsc && node ./dist/src/server.js",
     "lint": "eslint . --ext .ts",
     "dev": "nodemon ./src/server.ts"
