@@ -50,7 +50,7 @@ describe('Post Interaction API test', () => {
           .post('/post')
           .set("authorization", `JWT ${accessToken}`)
           .send({
-            title: 'Test Post',
+            city: 'Test Post',
             location: 'Test Location',
             description: 'Test Description',
             photos: ['photo1.jpg'],
@@ -58,7 +58,7 @@ describe('Post Interaction API test', () => {
           });
     
         expect(postResponse.statusCode).toBe(201);
-        expect(postResponse.body.title).toBe('Test Post');
+        expect(postResponse.body.city).toBe('Test Post');
         postId = postResponse.body._id;
     });
 

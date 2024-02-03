@@ -17,9 +17,9 @@ import authMiddleware from "../middlewares/auth_middleware";
  *     Post:
  *       type: object
  *       properties:
- *         title:
+ *         city:
  *           type: string
- *           description: The title of the post.
+ *           description: The city associated with the post.
  *         location:
  *           type: string
  *           description: The location associated with the post.
@@ -35,7 +35,7 @@ import authMiddleware from "../middlewares/auth_middleware";
  *           type: string
  *           description: The user ID associated with the post.
  *       required:
- *         - title
+ *         - city
  *         - location
  *         - description
  *         - photos
@@ -94,7 +94,7 @@ router.get("/:id", postController.getById.bind(postController));
  *           schema:
  *             $ref: '#/components/schemas/Post'   # Reference to the Post schema
  *           example:
- *             title: "Example Post"
+ *             city: "Example Post"
  *             location: "Example Location"
  *             description: "This is an example post description."
  *             photos: ["example-photo1.jpg", "example-photo2.jpg"]
