@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/user_model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 
 const register = async (req: Request, res: Response) => {
   const email = req.body.email;
@@ -159,12 +160,60 @@ const refreshToken = async (req: Request, res: Response) => {
   );
 };
 
-const loginWithGoogle = async (req: Request, res: Response) => {};
+const client = new OAuth2Client();
+const signInWithGoogle = async (req: Request, res: Response) => {
+  console.log("hiiiiii");
+  console.log("--------------------------------------------");
+  console.log(req.body);
+  console.log("--------------------------------------------");
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: req.body.credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    console.log(payload);
+    const email = payload?.email;
+    if (email != null) {
+      let user = await User.findOne({ email: email });
+      if (user == null) {
+        //user dont exist, register
+        user = await User.create({
+          email: email,
+          password: "guhiuj",
+          name: payload?.name,
+        });
+      }
+      const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION,
+      });
+      const refreshToken = jwt.sign(
+        { _id: user._id },
+        process.env.JWT_REFRESH_SECRET
+      );
+      if (user.refreshTokens == null) {
+        user.refreshTokens = [refreshToken];
+      } else {
+        user.refreshTokens.push(refreshToken);
+      }
+      await user.save();
+      return res.status(200).json({
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        userId: user._id,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(400).send(err.message);
+  }
+};
 
 export default {
   register,
   login,
   logout,
   refreshToken,
-  loginWithGoogle,
+  signInWithGoogle,
 };
