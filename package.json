@@ -6,8 +6,7 @@
   "scripts": {
     "test": "tsc && jest --detectOpenHandles --coverage --forceExit",
     "start": "tsc && node ./dist/src/server.js",
-    "prod-build": "tsc -p tsconfig-prod.json",
-    "prod-serve": "node ./dist/src/server.js",
+    "prod": "tsc -p tsconfig-prod.json && node ./dist/src/server.js",
     "lint": "eslint . --ext .ts",
     "dev": "nodemon ./src/server.ts"
   },
