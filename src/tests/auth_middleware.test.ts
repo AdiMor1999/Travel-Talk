@@ -95,4 +95,44 @@ describe("Auth Middleware Tests", () => {
     //   .send();
     // expect(response3.statusCode).not.toBe(200);
   });
+
+  test("should return 401 if auth token is missing", async () => {
+    const response = await request(app).get(`/auth/refresh`);
+    expect(response.status).toBe(401);
+  });
+
+  test("should return 401 if auth token format is incorrect", async () => {
+    const response = await request(app)
+      .get(`/auth/refresh`)
+      .set("Authorization", "InvalidTokenFormat");
+    expect(response.status).toBe(401);
+  });
+  test("should return 401 if refresh token is invalid", async () => {
+    const response = await request(app)
+      .get(`/auth/refresh`)
+      .set("Authorization", "JWT InvalidRefreshToken");
+    expect(response.status).toBe(401);
+  });
+  test("should return 401 if user does not exist in database", async () => {
+    const invalidUserId = new mongoose.Types.ObjectId().toHexString();
+    const invalidRefreshToken = jwt.sign(
+      { _id: invalidUserId },
+      process.env.JWT_REFRESH_SECRET
+    );
+    const response = await request(app)
+      .get(`/auth/refresh`)
+      .set("Authorization", `JWT ${invalidRefreshToken}`);
+    expect(response.status).toBe(401);
+  });
+  test("should return 401 if refresh token has expired", async () => {
+    const expiredRefreshToken = jwt.sign(
+      { _id: testUserId },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: "-1s" }
+    );
+    const response = await request(app)
+      .get(`/auth/refresh`)
+      .set("Authorization", `JWT ${expiredRefreshToken}`);
+    expect(response.status).toBe(401);
+  });
 });
