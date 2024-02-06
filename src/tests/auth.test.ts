@@ -25,6 +25,17 @@ const userLogout = {
   password: "logoutpassword",
   name: "logout",
 };
+const userLogoutNoToken = {
+  email: "userLogoutNoToken@gmail.com",
+  password: "1234",
+  name: "userLogoutNoToken",
+};
+
+const user3 = {
+  email: "user3@gmail.com",
+  password: "1234",
+  name: "user3",
+};
 
 describe("Auth Tests", () => {
   beforeAll(async () => {
@@ -35,6 +46,7 @@ describe("Auth Tests", () => {
     await User.deleteMany({ email: userLogIn.email });
     await User.deleteMany({ email: userData.email });
     await User.deleteMany({ email: userLogout.email });
+    await User.deleteMany({ email: userLogoutNoToken.email });
     await mongoose.connection.close();
   });
 
@@ -117,5 +129,34 @@ describe("Auth Tests", () => {
       .send();
 
     expect(logoutResponse.status).toBe(200);
+  });
+
+  test("should return 401 if refreshToken is null", async () => {
+    // Login with the test user's credentials
+    await request(app).post("/auth/register").send(userLogoutNoToken);
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: userLogoutNoToken.email,
+      password: "1234",
+    });
+
+    // Logout the user withpou refresh token
+    const logoutResponse = await request(app).post("/auth/logout");
+    expect(logoutResponse.status).toBe(401);
+  });
+
+  test("should return 401 if verify not success", async () => {
+    // Login with the test user's credentials
+    await request(app).post("/auth/register").send(user3);
+    const loginResponse = await request(app).post("/auth/login").send({
+      email: user3.email,
+      password: "1234",
+    });
+    const refreshToken = "invalidRefreshToken";
+    // Logout the user
+    const logoutResponse = await request(app)
+      .post("/auth/logout")
+      .set("authorization", `JWT ${refreshToken}`)
+      .send();
+    expect(logoutResponse.status).toBe(401);
   });
 });

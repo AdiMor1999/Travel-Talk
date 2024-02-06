@@ -132,7 +132,8 @@ const refreshToken = async (req: Request, res: Response) => {
         ) {
           userDb.refreshTokens = [];
           await userDb.save();
-          return res.sendStatus(401);
+          //return res.sendStatus(401);
+          throw new Error("Invalid refresh token");
         }
         const accessToken = jwt.sign(
           { _id: user._id },
@@ -154,7 +155,9 @@ const refreshToken = async (req: Request, res: Response) => {
           refreshToken: refreshToken,
         });
       } catch (err) {
-        res.sendStatus(401).send(err.message);
+        //res.sendStatus(401).send(err.message);
+        //console.error(err);
+        res.sendStatus(401);
       }
     }
   );
