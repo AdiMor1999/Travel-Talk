@@ -14,7 +14,7 @@ initApp().then((app) => {
         version: "1.0.0",
         description: "REST server including authentication using JWT",
       },
-      servers: [{ url: "http://localhost:3000" }],
+      servers: [{ url: "https://10.10.248.206" }],
     },
     apis: ["./src/routes/*.ts"],
   };
@@ -24,11 +24,11 @@ initApp().then((app) => {
   if (process.env.NODE_ENV !== "production") {
     console.log("development");
     http.createServer(app).listen(process.env.PORT);
-  }else {
+  } else {
     console.log("production");
     const options1 = {
-    key: fs.readFileSync('../client-key.pem'),
-    cert: fs.readFileSync('../client-cert.pem')
+      key: fs.readFileSync("../client-key.pem"),
+      cert: fs.readFileSync("../client-cert.pem"),
     };
     https.createServer(options1, app).listen(process.env.HTTPS_PORT);
   }
